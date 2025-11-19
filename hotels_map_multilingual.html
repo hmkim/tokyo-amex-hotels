@@ -366,13 +366,15 @@
 
         function createMarker(hotel, position) {
             const color = hotel.program_type === 'FHR' ? '#006FCF' : '#00A862';
+            const hasOffer = hotel.special_offer && hotel.special_offer.trim() !== '';
+            
             const marker = new google.maps.Marker({
                 position: position,
                 map: map,
                 title: hotel.name,
                 icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale: 8,
+                    path: hasOffer ? 'M 0,-24 6,-7 24,-7 10,4 15,21 0,11 -15,21 -10,4 -24,-7 -6,-7 Z' : google.maps.SymbolPath.CIRCLE,
+                    scale: hasOffer ? 1 : 8,
                     fillColor: color,
                     fillOpacity: 1,
                     strokeColor: 'white',
@@ -405,10 +407,10 @@
             }
             
             let offer = '';
-            if (h.special_offer) {
+            if (h.special_offer && h.special_offer.trim() !== '') {
                 offer = `<div class="hotel-offer">
-                    <div style="font-weight:bold;color:#E65100">${h.special_offer}</div>
-                    ${h.offer_period ? `<div style="font-size:10px;margin-top:3px">${h.offer_period}</div>` : ''}
+                    <div style="font-weight:bold;color:#E65100">⭐ ${h.special_offer}</div>
+                    ${h.offer_period && h.offer_period.trim() !== '' ? `<div style="font-size:10px;margin-top:3px">📅 ${h.offer_period}</div>` : ''}
                 </div>`;
             }
 
